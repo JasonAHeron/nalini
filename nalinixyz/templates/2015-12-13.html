@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>The 13th</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
     <p>Today you should be in India.</p>
     <p>Right now It's {{ time_in_india }} for you and it's {{ time_in_america }} for me.</p>
     <p>Right now I love you, and right now I miss you.</p>
 
     <p>I have a song for you: https://www.youtube.com/watch?v=RgKAFK5djSk</p>
-</body>
-</html>
+{% endblock %}
