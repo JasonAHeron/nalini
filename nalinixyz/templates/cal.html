@@ -2,13 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-	<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <meta name=viewport content="width=device-width, initial-scale=1">
-	<title>NinVent</title>
-	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:300,400,700">
     <link rel="stylesheet" href="{%  static "cal.css" %}">
-
+    <title>NinVent</title>
 </head>
 <body>
 
@@ -16,7 +14,7 @@
 
 		<div class="calendar">
 
-			<header>				
+			<header>
 
 				<h2>Nalini Advent Calendar</h2>
                 <h3>{{ month_name }}</h3>
@@ -46,11 +44,7 @@
 					{%  for weeks in month %}
 					<tr>
                         {%  for week_day in weeks %}
-                            {% if week_day == day %}
-                            <td class="current-day">{{ week_day }}</td>
-                            {% else %}
-						    <td>{{ week_day }}</td>
-                            {% endif %}
+                            <td id="{{ week_day.month }}_{{ week_day.day }}_{{ week_day.year }}" class="day-class {% if week_day.day == day %}current-day {% elif week_day.month != month_number%}prev-month{% else %}{% endif %}">{{ week_day.day }}</td>
 					    {% endfor %}
 					</tr>
                     {% endfor %}
@@ -61,6 +55,8 @@
 		</div> <!-- end calendar -->
 
 	</div> <!-- end container -->
-	
+
 </body>
+<!-- Latest compiled and minified CSS -->
+<script src="{% static "cal.js" %}"></script>
 </html>

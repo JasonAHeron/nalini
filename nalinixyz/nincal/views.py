@@ -1,13 +1,15 @@
 import datetime
-
+from pytz import timezone
 from django.shortcuts import render
 from nincal.helpers.constants import YEAR
 from nincal.helpers.calendar_helper import create_month
 from nincal.helpers.forismatic_api import get_quote
 
 def index(request):
-    today = datetime.datetime.date(datetime.datetime.now())
+    today_in_india = datetime.datetime.now(timezone('Asia/Calcutta'))
+    today = today_in_india.date()
     quote, author = get_quote()
+    #month = create_month(today)
 
     data = {
         'month_number': today.month,
@@ -15,6 +17,12 @@ def index(request):
         'month_name' : YEAR[today.month-1],
         'month' : create_month(today),
         'quote': quote,
-        'author': author
+        'author': author,
+        'debug': today_in_india
     }
     return render(request, 'cal.html', data)
+
+
+def days(request):
+    print(request.GET.get('day'))
+    return render(request, 'day_1.html', request.GET)
