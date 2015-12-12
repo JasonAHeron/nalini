@@ -163,17 +163,3 @@ table {
         transform: scale(0.75)
     }
 }
-
-/*
-
-
-@mid-phone: 480px;
-@max-phone: 767px;
-@min-tablet: 768px;
-@max-tablet: 1024px;
-@min-desktop: 1025px;
-@min-lg-desktop: 1280px;
-@min-xlg-desktop: 1322px;
-@max-xlg-desktop: 1536px;
-
-*/

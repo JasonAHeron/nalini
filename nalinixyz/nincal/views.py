@@ -25,7 +25,7 @@ def index(request):
 
 def days(request):
     override = request.GET.get('override')
-    day_iso = request.GET.get('day')
+    day_iso = datetime.datetime(*map(int, request.GET.get('day').split('-'))).date().isoformat()
     now_in_india = datetime.datetime.now(timezone('Asia/Calcutta'))
     now_in_america = datetime.datetime.now(timezone('America/Los_Angeles'))
     now_iso = now_in_india.date().isoformat()
