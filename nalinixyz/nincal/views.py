@@ -24,6 +24,7 @@ def index(request):
 
 
 def days(request):
+    override = request.GET.get('override')
     day_iso = request.GET.get('day')
     now_in_india = datetime.datetime.now(timezone('Asia/Calcutta'))
     now_in_america = datetime.datetime.now(timezone('America/Los_Angeles'))
@@ -34,6 +35,8 @@ def days(request):
             'time_in_america': now_in_america,
             }
 
+    if override:
+        return render(request, '{}.html'.format(override), data)
     if day_iso <= '2015-12-11':
         return render(request, 'withme.html', data)
     if day_iso <= now_iso:
