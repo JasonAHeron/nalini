@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
+    <div class="jumbotron">
+    <h1>Day Two!</h1>
     <p>Today you should be in India.</p>
     <p>Right now It's {{ time_in_india }} for you and it's {{ time_in_america }} for me.</p>
     <p>Right now I love you, and right now I miss you.</p>
-
-    <p>I have a song for you: https://www.youtube.com/watch?v=RgKAFK5djSk</p>
+    <p>I have a song for you:</p>
+        <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/RgKAFK5djSk"></iframe>
+        </div>
+</div>
 {% endblock %}
