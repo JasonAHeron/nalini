@@ -24,5 +24,10 @@ def index(request):
 
 
 def days(request):
-    print(request.GET.get('day'))
-    return render(request, 'day_1.html', request.GET)
+    day_iso = request.GET.get('day')
+    today_in_india = datetime.datetime.now(timezone('Asia/Calcutta'))
+    today_iso = today_in_india.date().isoformat()
+    if day_iso <= today_iso:
+        return render(request, 'day_1.html', request.GET)
+    else:
+        return render(request, 'day_unavailable.html')

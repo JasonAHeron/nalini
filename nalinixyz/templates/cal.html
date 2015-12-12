@@ -44,7 +44,7 @@
 					{%  for weeks in month %}
 					<tr>
                         {%  for week_day in weeks %}
-                            <td id="{{ week_day.month }}_{{ week_day.day }}_{{ week_day.year }}" class="day-class {% if week_day.day == day %}current-day {% elif week_day.month != month_number%}prev-month{% else %}{% endif %}">{{ week_day.day }}</td>
+                            <td id="{{ week_day.year }}-{{ week_day.month }}-{{ week_day.day }}" class="day-class {% if week_day.day == day %}current-day {% elif week_day.month != month_number%}prev-month{% else %}{% endif %}">{{ week_day.day }}</td>
 					    {% endfor %}
 					</tr>
                     {% endfor %}
