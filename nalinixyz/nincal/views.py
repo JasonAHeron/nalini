@@ -4,6 +4,7 @@ from django.shortcuts import render
 from nincal.helpers.constants import YEAR
 from nincal.helpers.calendar_helper import create_month, get_times
 from nincal.helpers.forismatic_api import get_quote
+from .models import Day, Poll, Event
 
 def index(request):
     today_in_india = datetime.datetime.now(timezone('Asia/Calcutta'))
@@ -26,6 +27,11 @@ def days(request):
     override = request.GET.get('override')
 
     time_data = get_times(request)
+    day = Day.objects.filter(date=time_data['day_iso'])
+    if day:
+        day = day[0]
+        time_data['polls_for_day'] = Poll.objects.filter(day=day)
+
 
     if override:
         return render(request, '{}.html'.format(override), time_data)
