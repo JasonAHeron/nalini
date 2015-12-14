@@ -3,5 +3,28 @@
     <div class="jumbotron">
     <h1>Day Four!</h1>
     <p>I'm making something cool, It's not done yet, It will be here in a bit though, probably when you wake up</p>
+    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+        {% for poll in polls_for_day %}
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default pollbutton" value="{{ poll.name }}">{{ poll.name }} | {{ poll.value }}</button>
+            </div>
+        {% endfor %}
+    </div>
 </div>
+    <script>
+    $('.pollbutton').click(function(button) {
+    $.ajax({
+        url: '#',
+        method: 'POST', // or another (GET), whatever you need
+        data: {
+            vote: button.target.value // data you need to pass to your function
+        },
+        success: function (data) {
+            location.reload();
+            // success callback
+            // you can process data returned by function from views.py
+        }
+    });
+});
+    </script>
 {% endblock %}
