@@ -6,6 +6,7 @@ from nincal.helpers.calendar_helper import create_month, get_times, get_india_is
 from nincal.helpers.forismatic_api import get_quote
 from django.views.decorators.csrf import csrf_exempt
 from .models import Day, Poll, Event, Option, Vote
+from collections import OrderedDict
 
 def index(request):
     today_in_india = datetime.datetime.now(timezone('Asia/Calcutta'))
@@ -47,13 +48,13 @@ def days(request):
         data['poll'] = poll
         data['options'] = {option.name: option.value for option in options}
         data['votes'] = {option.name: [int(v.time) for v in Vote.objects.filter(option=option)] for option in options}
-        all_votes = sorted(Vote.objects.all(), key=lambda x: x.time)
+        all_votes = Vote.objects.all()
         avt = {int(vote.time):vote.name for vote in all_votes}
         data['all_vote_times'] = avt
         data['all_votes'] = [0] + list(avt.keys())
         data['Jason'] = [0]
         data['Nalini'] = [0]
-        for key, value in avt.items():
+        for key, value in sorted(avt.items(), key=lambda x:x[0]):
             if value == 'Jason':
                 data['Jason'].append(data['Jason'][-1]+1)
                 data['Nalini'].append(data['Nalini'][-1])
