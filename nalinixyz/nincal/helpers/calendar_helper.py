@@ -13,3 +13,8 @@ def get_times(request):
         'now_in_america' : datetime.datetime.now(timezone('America/Los_Angeles')),
         'now_iso' : datetime.datetime.now(timezone('Asia/Calcutta')).date().isoformat()
     }
+
+
+def get_india_iso():
+    time = datetime.datetime.now(timezone('Asia/Calcutta'))
+    return "{}{}{}{}{}{}".format(time.year, time.month, time.day, time.hour, time.minute, time.second)

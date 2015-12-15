@@ -20,7 +20,33 @@ class Event(models.Model):
 class Poll(models.Model):
     day = models.ForeignKey(Day, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    value = models.IntegerField(default=0)
+
+    @property
+    def options(self):
+        op = Option.objects.filter(poll=self)
+        return ", ".join([o.name for o in op])
 
     def __str__(self):
-        return "D {} | N {} | V {}".format(self.day, self.name, self.value)
+        return "D {} | N {} | O {}".format(self.day, self.name, self.options)
+
+class Option(models.Model):
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+
+    @property
+    def value(self):
+        return len(Vote.objects.filter(option=self))
+
+    def __str__(self):
+        return "P {} | N {} | V {}".format(self.poll.name, self.name, self.value)
+
+class Vote(models.Model):
+    option = models.ForeignKey(Option, on_delete=models.CASCADE)
+    time = models.CharField(max_length=100)
+
+    @property
+    def name(self):
+        return self.option.name
+
+    def __str__(self):
+        return "O {} | T {}".format(self.option, self.time)

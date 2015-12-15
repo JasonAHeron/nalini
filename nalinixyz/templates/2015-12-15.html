@@ -2,11 +2,11 @@
 {% block content %}
     <div class="jumbotron">
     <h1>Day Four!</h1>
-    <p>I'm making something cool, It's not done yet, It will be here in a bit though, probably when you wake up</p>
+    <h2>Who will win! {{ poll }}</h2>
     <div class="btn-group btn-group-justified" role="group" aria-label="...">
-        {% for poll in polls_for_day %}
+        {% for name, value in options.items %}
             <div class="btn-group" role="group">
-                <button type="button" class="btn btn-default pollbutton" value="{{ poll.name }}">{{ poll.name }} | {{ poll.value }}</button>
+                <button type="button" class="btn btn-default pollbutton" value="{{ name }}">{{ name }} | {{ value }}</button>
             </div>
         {% endfor %}
     </div>
@@ -27,4 +27,57 @@
     });
 });
     </script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+    <script>
+    $(function () {
+    $('#container').highcharts({
+        title: {
+            text: '{{ poll.name }}',
+            x: -20 //center
+        },
+        subtitle: {
+            text: '{{ poll.options }}',
+            x: -20
+        },
+        xAxis: {
+            categories: {{ all_votes }}
+        },
+        yAxis: {
+            title: {
+                text: 'Votes'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: 'V'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [
+            {
+                    name: 'Jason',
+                    data: {{ Jason }}
+                },
+                            {
+                    name: 'Nalini',
+                    data: {{ Nalini }}
+                }
+
+        ]
+    });
+});
+    </script>
+
 {% endblock %}
