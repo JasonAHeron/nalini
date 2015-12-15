@@ -54,7 +54,7 @@ def days(request):
         data['all_votes'] = [0] + list(avt.keys())
         data['Jason'] = [0]
         data['Nalini'] = [0]
-        for key, value in sorted(avt.items(), key=lambda x:x[0]):
+        for key, value in sorted(avt.items(), key=lambda x:int(x[0])):
             if value == 'Jason':
                 data['Jason'].append(data['Jason'][-1]+1)
                 data['Nalini'].append(data['Nalini'][-1])
