@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'days.apps.DaysConfig',
     'nincal.apps.NincalConfig',
     'django.contrib.admin',
     'django.contrib.auth',
