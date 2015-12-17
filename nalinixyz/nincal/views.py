@@ -34,6 +34,7 @@ available_days = {
     '2015-12-13': simple_day,
     '2015-12-14': simple_day,
     '2015-12-15': polls,
+    '2015-12-17': simple_day,
 }
 
 available_days_post = {
