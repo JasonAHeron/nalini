@@ -25,54 +25,73 @@ def index(request):
     return render(request, 'cal.html', data)
 
 
-def update_databases(request):
-    print(request)
+def update_polls(request, time_data):
     vote = request.POST.get('vote')
     if vote:
         option = Option.objects.get(name=vote)
         Vote(option=option, time=get_india_iso()).save()
 
 
-@csrf_exempt
-def days(request):
-    if request.POST:
-        print(request)
-        update_databases(request)
 
-    override = request.GET.get('override')
+def simple_day(request, time_data):
+    return render(request, '{}.html'.format(time_data['day_iso']), time_data)
 
-    data = get_times(request)
-    day = Day.objects.filter(date=data['day_iso'])
+
+def polls(request, time_data):
+    day = Day.objects.filter(date=time_data['day_iso'])
     if day:
         poll = Poll.objects.get(day=day[0])
         options = Option.objects.filter(poll=poll)
-        data['poll'] = poll
-        data['options'] = {option.name: option.value for option in options}
-        data['votes'] = {option.name: [int(v.time) for v in Vote.objects.filter(option=option)] for option in options}
+        time_data['poll'] = poll
+        time_data['options'] = {option.name: option.value for option in options}
+        time_data['votes'] = {option.name: [int(v.time) for v in Vote.objects.filter(option=option)] for option in options}
         all_votes = Vote.objects.all()
         avt = {int(vote.time):vote.name for vote in all_votes}
-        data['all_vote_times'] = avt
-        data['all_votes'] = [0] + sorted(list(avt.keys()), reverse=True)
-        data['Jason'] = [0]
-        data['Nalini'] = [0]
+        time_data['all_vote_times'] = avt
+        time_data['all_votes'] = [0] + sorted(list(avt.keys()), reverse=True)
+        time_data['Jason'] = [0]
+        time_data['Nalini'] = [0]
         for key, value in sorted(avt.items(), key=lambda x:int(x[0])):
             if value == 'Jason':
-                data['Jason'].append(data['Jason'][-1]+1)
-                data['Nalini'].append(data['Nalini'][-1])
+                time_data['Jason'].append(time_data['Jason'][-1]+1)
+                time_data['Nalini'].append(time_data['Nalini'][-1])
 
             else:
-                data['Nalini'].append(data['Nalini'][-1]+1)
-                data['Jason'].append(data['Jason'][-1])
+                time_data['Nalini'].append(time_data['Nalini'][-1]+1)
+                time_data['Jason'].append(time_data['Jason'][-1])
+    return render(request, '2015-12-15.html', time_data)
 
+
+available_days = {
+    '2015-12-12': simple_day,
+    '2015-12-13': simple_day,
+    '2015-12-14': simple_day,
+    '2015-12-15': polls,
+}
+
+available_days_post = {
+    '2015-12-15': update_polls
+}
+
+
+@csrf_exempt
+def days(request):
+    day_clicked = request.GET.get('day')
+    override = request.GET.get('override')
+    time_data = get_times(request)
+
+    if request.POST:
+        available_days_post[day_clicked](request, time_data)
 
     if override:
-        return render(request, '{}.html'.format(override), data)
+        day_clicked = override
+        return(available_days[day_clicked](request, time_data))
 
-    if data['day_iso'] <= '2015-12-11':
-        return render(request, 'withme.html', data)
+    if time_data['day_iso'] <= '2015-12-11':
+        return render(request, 'withme.html', time_data)
 
-    if data['day_iso'] <= data['now_iso']:
-        return render(request, '{}.html'.format(data['day_iso']), data)
+    if time_data['day_iso'] <= time_data['now_iso']:
+        return(available_days[day_clicked](request, time_data))
 
     else:
-        return render(request, 'day_unavailable.html', data)
+        return render(request, 'day_unavailable.html', time_data)
